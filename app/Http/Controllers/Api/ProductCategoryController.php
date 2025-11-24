@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 
+use function PHPSTORM_META\type;
+
 class ProductCategoryController extends Controller
 {
     /**
@@ -13,11 +15,20 @@ class ProductCategoryController extends Controller
      */
     public function index()
     {
-        $categories = ProductCategory::all();
+        try{
+            $categories = ProductCategory::all();
         return response()->json([
             'success' => true,
             'data' => $categories
         ], 200);
+
+        } catch(\Exception $e){
+            return response()->json([
+                'type'=>$e->getMessage(),
+                'data'=>null
+            ]);
+        }
+        
     }
 
     /**
@@ -33,41 +44,42 @@ class ProductCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string'
-    ]);
+        try{
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string'
+            ]);
+            $category = ProductCategory::create($request->all());
+    
+            return response()->json([
+                'success' => true,
+                'data' => $category
+            ], 201);
 
-    $category = ProductCategory::create($request->all());
-
-    return response()->json([
-        'success' => true,
-        'data' => $category
-    ], 201);
+        } catch(\Exception $e){
+            return response()->json([
+                'type'=>$e->getMessage(),
+                'data'=>null
+            ]);
+        }
+       
     }
 
-    /**
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $category = ProductCategory::find($id);
-
-    if (!$category) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Category not found'
-        ], 404);
-    }
-
-    return response()->json([
-        'success' => true,
-        'data' => $category
-    ], 200);
+        try{
+            $category = ProductCategory::find($id);
+            return response()->json([
+                'success' => true,
+                'data' => $category
+            ], 200);
+        } catch(\Exception $e){
+            return response()->json([
+                'type'=>$e->getMessage(),
+                'data'=>null,
+                'message' => 'Category not found'
+            ]);
+        }
     }
 
     /**
