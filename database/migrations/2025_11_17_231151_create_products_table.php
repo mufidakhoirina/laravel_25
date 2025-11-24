@@ -9,6 +9,7 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')->constrained('product_categories')->OnDelete('restrict');
             $table->string('name');
             $table->text('description')->nullable();
             $table->timestamps();
