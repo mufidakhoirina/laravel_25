@@ -81,13 +81,21 @@ class ProductCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ProductCategory $product_category)
+    public function update(Request $request, string $id)
     {
         $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string'
         ]);
-        $product_category->update($request->all());
+        $product_category = ProductCategory::find($id);
+        if (!$product_category) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Product category not found'
+            ], 404);
+        }
+        $validatedData = $request->only(['name', 'description']);
+        $product_category->update($validatedData);
         return response()->json([
             'success' => true,
             'data' => $product_category
@@ -97,12 +105,18 @@ class ProductCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProductCategory $product_category)
+    public function destroy(string $id)
     {
+        $product_category = ProductCategory::find($id);
+        if (!$product_category) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Product category not found'
+            ], 404);
+        }
         $product_category->delete();
         return response()->json([
             'success' => true,
-            'message' => 'Product category deleted successfully'
-        ], 200);
+            'message' => 'Product category deleted successfully']);
     }
 }
