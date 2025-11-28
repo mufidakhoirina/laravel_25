@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 
 class ProductCategoryController extends Controller
@@ -13,19 +12,7 @@ class ProductCategoryController extends Controller
      */
     public function index()
     {
-        $categories = ProductCategory::all();
-        return response()->json([
-            'success' => true,
-            'data' => $categories
-        ], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(Request $request)
-    {
-
+        //
     }
 
     /**
@@ -33,17 +20,7 @@ class ProductCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string'
-    ]);
-
-    $category = ProductCategory::create($request->all());
-
-    return response()->json([
-        'success' => true,
-        'data' => $category
-    ], 201);
+        //
     }
 
     /**
@@ -55,26 +32,6 @@ class ProductCategoryController extends Controller
      */
     public function show($id)
     {
-        $category = ProductCategory::find($id);
-
-    if (!$category) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Category not found'
-        ], 404);
-    }
-
-    return response()->json([
-        'success' => true,
-        'data' => $category
-    ], 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
         //
     }
 
@@ -83,23 +40,7 @@ class ProductCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string'
-        ]);
-        $product_category = ProductCategory::find($id);
-        if (!$product_category) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Product category not found'
-            ], 404);
-        }
-        $validatedData = $request->only(['name', 'description']);
-        $product_category->update($validatedData);
-        return response()->json([
-            'success' => true,
-            'data' => $product_category
-        ], 200);
+        //
     }
 
     /**
@@ -107,16 +48,6 @@ class ProductCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $product_category = ProductCategory::find($id);
-        if (!$product_category) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Product category not found'
-            ], 404);
-        }
-        $product_category->delete();
-        return response()->json([
-            'success' => true,
-            'message' => 'Product category deleted successfully']);
+        //
     }
 }

@@ -1,102 +1,100 @@
 <?php
-// app/Http/Controllers/ProductController.php
+// app/Http/Controllers/ProductVariantController.php
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-class ProductController extends Controller
+class ProductVariantController extends Controller
 {
     public function index(): JsonResponse
     {
-        $products = Product::with(['category', 'variants'])->get();
+        $variants = ProductVariant::all();
         
         return response()->json([
             'success' => true,
-            'data' => $products
+            'data' => $variants
         ]);
     }
 
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'category_id' => 'required|exists:product_categories,id',
+            'product_id' => 'required|exists:products,id',
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
             'price' => 'required|numeric|min:0'
         ]);
 
-        $product = Product::create($validated);
+        $variant = ProductVariant::create($validated);
 
         return response()->json([
             'success' => true,
-            'data' => $product->load(['category', 'variants']),
-            'message' => 'Product created successfully'
+            'data' => $variant->load('product'),
+            'message' => 'Product variant created successfully'
         ], 201);
     }
 
     public function show(string $id): JsonResponse
     {
-        $product = Product::with(['category', 'variants'])->find($id);
+        $variant = ProductVariant::find($id);
 
-        if (!$product) {
+        if (!$variant) {
             return response()->json([
                 'success' => false,
-                'message' => 'Product not found'
+                'message' => 'Product variant not found'
             ], 404);
         }
 
         return response()->json([
             'success' => true,
-            'data' => $product
+            'data' => $variant
         ]);
     }
 
     public function update(Request $request, string $id): JsonResponse
     {
-        $product = Product::find($id);
+        $variant = ProductVariant::find($id);
 
-        if (!$product) {
+        if (!$variant) {
             return response()->json([
                 'success' => false,
-                'message' => 'Product not found'
+                'message' => 'Product variant not found'
             ], 404);
         }
 
         $validated = $request->validate([
-            'category_id' => 'sometimes|exists:product_categories,id',
+            'product_id' => 'sometimes|exists:products,id',
             'name' => 'sometimes|string|max:255',
-            'description' => 'nullable|string',
             'price' => 'sometimes|numeric|min:0'
         ]);
 
-        $product->update($validated);
+        $variant->update($validated);
 
         return response()->json([
             'success' => true,
-            'data' => $product->load(['category', 'variants']),
-            'message' => 'Product updated successfully'
+            'data' => $variant->load('product'),
+            'message' => 'Product variant updated successfully'
         ]);
     }
 
     public function destroy(string $id): JsonResponse
     {
-        $product = Product::find($id);
+        $variant = ProductVariant::find($id);
 
-        if (!$product) {
+        if (!$variant) {
             return response()->json([
                 'success' => false,
-                'message' => 'Product not found'
+                'message' => 'Product variant not found'
             ], 404);
         }
 
-        $product->delete();
+        $variant->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Product deleted successfully'
+            'message' => 'Product variant deleted successfully'
         ]);
     }
 }

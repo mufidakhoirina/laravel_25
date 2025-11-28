@@ -1,102 +1,98 @@
 <?php
-// app/Http/Controllers/ProductController.php
+// app/Http/Controllers/ProductCategoryController.php
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-class ProductController extends Controller
+class ProductCategoryController extends Controller
 {
     public function index(): JsonResponse
     {
-        $products = Product::with(['category', 'variants'])->get();
+        $categories = ProductCategory::all();
         
         return response()->json([
             'success' => true,
-            'data' => $products
+            'data' => $categories
         ]);
     }
 
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'category_id' => 'required|exists:product_categories,id',
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0'
+            'description' => 'nullable|string'
         ]);
 
-        $product = Product::create($validated);
+        $category = ProductCategory::create($validated);
 
         return response()->json([
             'success' => true,
-            'data' => $product->load(['category', 'variants']),
-            'message' => 'Product created successfully'
+            'data' => $category,
+            'message' => 'Category created successfully'
         ], 201);
     }
 
     public function show(string $id): JsonResponse
     {
-        $product = Product::with(['category', 'variants'])->find($id);
+        $category = ProductCategory::find($id);
 
-        if (!$product) {
+        if (!$category) {
             return response()->json([
                 'success' => false,
-                'message' => 'Product not found'
+                'message' => 'Category not found'
             ], 404);
         }
 
         return response()->json([
             'success' => true,
-            'data' => $product
+            'data' => $category
         ]);
     }
 
     public function update(Request $request, string $id): JsonResponse
     {
-        $product = Product::find($id);
+        $category = ProductCategory::find($id);
 
-        if (!$product) {
+        if (!$category) {
             return response()->json([
                 'success' => false,
-                'message' => 'Product not found'
+                'message' => 'Category not found'
             ], 404);
         }
 
         $validated = $request->validate([
-            'category_id' => 'sometimes|exists:product_categories,id',
             'name' => 'sometimes|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'sometimes|numeric|min:0'
+            'description' => 'nullable|string'
         ]);
 
-        $product->update($validated);
+        $category->update($validated);
 
         return response()->json([
             'success' => true,
-            'data' => $product->load(['category', 'variants']),
-            'message' => 'Product updated successfully'
+            'data' => $category,
+            'message' => 'Category updated successfully'
         ]);
     }
 
     public function destroy(string $id): JsonResponse
     {
-        $product = Product::find($id);
+        $category = ProductCategory::find($id);
 
-        if (!$product) {
+        if (!$category) {
             return response()->json([
                 'success' => false,
-                'message' => 'Product not found'
+                'message' => 'Category not found'
             ], 404);
         }
 
-        $product->delete();
+        $category->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Product deleted successfully'
+            'message' => 'Category deleted successfully'
         ]);
     }
 }
