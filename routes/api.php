@@ -13,7 +13,9 @@ Route::prefix('v1')->group(function () {
     Route::resource('product-categories', ProductCategoryController::class);
     Route::resource('product-variants', ProductVariantController::class);
     Route::resource('vendors', VendorController::class);
-
+    Route::resource('product-categories', ProductCategoryController::class);
+    Route::apiResource('products', ProductController::class);
+    Route::apiResource('product-variants', ProductVariantController::class);
     Route::get('/halo', function () {
         return 'Halo, Laravel!';
     });

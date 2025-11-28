@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProductCategory;
@@ -95,40 +95,14 @@ class ProductCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string'
-        ]);
-        $product_category = ProductCategory::find($id);
-        if (!$product_category) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Product category not found'
-            ], 404);
-        }
-        $validatedData = $request->only(['name', 'description']);
-        $product_category->update($validatedData);
-        return response()->json([
-            'success' => true,
-            'data' => $product_category
-        ], 200);
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $product_category = ProductCategory::find($id);
-        if (!$product_category) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Product category not found'
-            ], 404);
-        }
-        $product_category->delete();
-        return response()->json([
-            'success' => true,
-            'message' => 'Product category deleted successfully']);
+        //
     }
 }
