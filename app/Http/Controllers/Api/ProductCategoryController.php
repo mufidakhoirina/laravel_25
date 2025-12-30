@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 
 use function PHPSTORM_META\type;
@@ -96,6 +96,7 @@ class ProductCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        //
     }
 
     /**
@@ -103,6 +104,7 @@ class ProductCategoryController extends Controller
      */
     public function destroy($id)
     {
+        //
         //
     }
 }

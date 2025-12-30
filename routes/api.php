@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\ProductVariantController;
 Route::prefix('v1')->group(function () {
     Route::resource('products', ApiProductController::class);
     Route::resource('product-categories', ProductCategoryController::class);
+    Route::apiResource('products', ProductController::class);
+    Route::apiResource('product-variants', ProductVariantController::class);
     Route::resource('product-variants', ProductVariantController::class);
     Route::resource('vendors', VendorController::class);
     Route::resource('product-categories', ProductCategoryController::class);
